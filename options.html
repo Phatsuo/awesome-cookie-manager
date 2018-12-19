@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<link id='styleLink' rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript" src="master.js"></script>
+<style>
+body {min-width:935px; overflow-x:hidden;font-size: 100%;}
+.header-font {font-family:calibri,arial;}
+.normal-font {font-family:calibri,arial;}
+.error {color:red;}
+.header-margin {margin-top:0px;margin-bottom:0px}
+.section-margin {margin-top:1px;margin-bottom:6px}
+.apply-padding {padding:4px}
+.ui-widget {font-size: 0.7em;}
+.ui-dialog .ui-dialog-buttonpane button {padding-top: 0em;padding-right: 0.2em;padding-bottom: 0em;padding-left: 0.2em;}
+.ui-dialog-content {padding-bottom: 0.0em;}
+.move-icon-down {position:relative;top:3px;}
+.move-option-down {position:relative;top:2px;}
+.createBookmarkDescriptionTextBox {width:400px;position:relative;left:2px;}
+</style>
+</head>
+<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+	<table cellpadding='3'>	
+		<tr>
+			<td rowspan='5'>
+				<a href='http://www.upway2late.com/projects/awesome-cookie-manager' target='_help' title="Info and Help for the 'Awesome Cookie Manager' Chrome extension."><img src='icon_128.png'></a>
+			</td>
+			<td rowspan='5' class='normal-font'>
+				<a href='http://www.upway2late.com/projects/awesome-cookie-manager' target='_help' title="Info and Help for the 'Awesome Cookie Manager' Chrome extension.">Help!</a>
+				<a href='http://www.upway2late.com/projects/awesome-cookie-manager' target='_help' title="Info and Help for the 'Awesome Cookie Manager' Chrome extension."><img src='help.png'></a>
+				&nbsp;&nbsp;&nbsp;
+				<b>Too many buttons?</b> Try the <a target='new' href='http://chrome.google.com/webstore/detail/bcmfandagknmpnambbppcpgclkccgigb?hl=en-US'>Button Bar</a>!<br/>
+				<img src='bar.png' height='121' width='380'>
+			</td>
+			<td valign='top'>
+				<a href='http://www.upway2late.com/' target='_new'><img class='move-icon-down' src='happy.png'></a>
+				<a href='http://www.upway2late.com/' target='_new'>UpWay2Late.com Software</a>
+			</td>
+		</tr>
+		<tr>
+			<td valign='top'>
+				<a href='https://chrome.google.com/webstore/detail/nfjaddknccljfohoaekkibpcceeenkah?hl=en-US' target='_tab_manager'><img class='move-icon-down' src='wintab16.png'></a>
+				Chrome Extension - <a href='https://chrome.google.com/webstore/detail/nfjaddknccljfohoaekkibpcceeenkah?hl=en-US' target='_tab_manager'>Awesome Window and Tab Manager</a>
+			</td>
+		</tr>
+		<tr>
+			<td valign='top'>
+				<a href='https://chrome.google.com/webstore/detail/agabedjjbijfpccchcmpfpcdfnlpjkoj?hl=en-US' target='_delicious_sync'><img class='move-icon-down' src='del16.png'></a>
+				Chrome Extension - <a href='https://chrome.google.com/webstore/detail/agabedjjbijfpccchcmpfpcdfnlpjkoj?hl=en-US' target='_delicious_sync'>Delicious Bookmark Bar Sync</a>
+			</td>
+		</tr>
+		<tr>
+			<td valign='top'>
+				<a href='https://chrome.google.com/webstore/detail/ilbhogiegeofdbmkbbbanjdggcoonbpd?hl=en-US' target='_pinboard_sync'><img class='move-icon-down' src='pin16.png'></a>
+				Chrome Extension - <a href='https://chrome.google.com/webstore/detail/ilbhogiegeofdbmkbbbanjdggcoonbpd?hl=en-US' target='_pinboard_sync'>Pinboard Bookmark Bar Sync</a>
+			</td>
+		</tr>
+		<tr>
+			<td valign='top'>
+				<a href='https://chrome.google.com/webstore/detail/bojojkkfhcebglmfbmaplhfkjfhaefaj?hl=en-US'  target='_search_it'><img class='move-icon-down' src='search16.png'></a>
+				Chrome Extension - <a href='https://chrome.google.com/webstore/detail/bojojkkfhcebglmfbmaplhfkjfhaefaj?hl=en-US' target='_search_it'>Search It!</a>
+			</td>
+		</tr>	
+	</table>
+</div>
+
+<h4 class='ui-widget-header ui-corner-all header-font header-margin'>&nbsp;Support Awesome Software Development</h4>	
+<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+	<table>
+		<tr>
+			<td>Support Awesome<br/>Software Development:</td>
+			<td>
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="XKT6Z99HH8Z8S">
+				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</td>
+		</tr>	
+	</table>
+</div>
+<h4 class='ui-widget-header ui-corner-all header-font header-margin'>&nbsp;Awesome Cookie Manager Options</h4>	
+<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+	<table>
+		<tr>
+			<td>Confirm Delete Cookies:</td>
+			<td>
+				<input type='checkbox' id='confirmDeleteCookiesCheckBox'/> <i>If checked, a confirm dialog appears when deleting current cookies.</i>
+			</td>
+		</tr>
+		<tr>
+			<td>Confirm Restore Saved Cookies:</td>
+			<td>
+				<input type='checkbox' id='confirmRestoreStoredCookiesCheckBox'/> <i>If checked, a confirm dialog appears when restoring saved cookies.</i>
+			</td>
+		</tr>
+		<tr>
+			<td>Restore Fix Expiration:</td>
+			<td>
+				<input type='checkbox' id='restoreFixExpirationCheckBox'/> <i>If checked, restored cookies with past expiration dates will be fixed.</i>
+			</td>
+		</tr>		
+		<tr>
+			<td>Confirm Delete Saved Cookies:</td>
+			<td>
+				<input type='checkbox' id='confirmDeleteStoredCookiesCheckBox'/> <i>If checked, a confirm dialog appears when deleting saved cookies.</i>
+			</td>
+		</tr>
+		<tr>
+			<td>Remember Filter:</td>
+			<td>
+				<input type='checkbox' id='rememberFilterCheckBox'/> <i>Choose if the last typed filter should be remembered. </i>
+			</td>
+		</tr>
+		<tr>
+			<td>Popup Height:</td>
+			<td>
+				<select id="heightSelect">
+					<option value="150">150 Pixels</option>
+					<option value="200">200 Pixels</option>
+					<option value="250">250 Pixels</option>
+					<option value="300">300 Pixels</option>
+					<option value="350">350 Pixels</option>
+					<option value="400">400 Pixels</option>
+					<option value="450">450 Pixels</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Popup Width:</td>
+			<td>
+				<select id="widthSelect">
+					<option value="700">700 Pixels</option>
+					<option value="750">750 Pixels</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input id='saveButton' type='button' value='Save'/>&nbsp;<input id='closeButton' type='button' value='Close'/>&nbsp;&nbsp;&nbsp;<span id='statusSpan'></span>
+</div>
+</body>
+</html>

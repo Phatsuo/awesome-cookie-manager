@@ -1,0 +1,20 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Use Relative Directory=1
+Relative to Project File=1
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Create Tagfile=0
+[Files]
+0=manifest.json
+1=popup.html
+2=Deploy.bat
+3=options.html
+4=background.html
+5=master.js
+6=externs.js
+7=..\..\..\ThirdParty\ClosureCompiler\chrome-extensions-externs.js
+8=..\..\..\ThirdParty\ClosureCompiler\jquery-1.7-externs.js

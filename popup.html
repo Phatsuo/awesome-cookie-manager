@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<link id='styleLink' rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript" src="master.js"></script>
+<style>
+body {overflow-x:hidden;font-size: 100%;}
+.header-font {font-family:calibri,arial;}
+.normal-font {font-family:calibri,arial;}
+.error {color:red;}
+.header-margin {margin-top:0px;margin-bottom:0px}
+.section-margin {margin-top:1px;margin-bottom:6px}
+.apply-padding {padding:4px}
+.ui-widget {font-size: 0.7em;}
+.ui-dialog .ui-dialog-buttonpane button {padding-top: 0em;padding-right: 0.2em;padding-bottom: 0em;padding-left: 0.2em;}
+.ui-dialog-content {padding-bottom: 0.0em;}
+.move-icon-down {position:relative;top:3px;}
+.editDiv {width:550px;overflow:auto}
+.editDivTr {word-wrap:break-word;}
+#selectAllButton { margin-top: 5px; margin-bottom: 5px; }
+#rightSpan { margin-top: 5px; }
+</style>
+</head>	
+<body>
+	<h4 class='ui-widget-header ui-corner-all header-font header-margin'>&nbsp;Awesome Cookie Manager</h4>	
+	<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+		<div id='statsDiv'>
+			<img class='move-icon-down' src='find.png'> Domain <input autofocus type='text' id='filterDomainInput'>
+			<img class='move-icon-down' src='find.png'> Name <input type='text' id='filterNameInput'>
+			<img class='move-icon-down' src='find.png'> Value <input type='text' id='filterValueInput'>
+			<a id='loadCookiesAnchor' class='move-icon-down' title='Refresh'><img src='refresh.png'></a>
+			<a id='clearFiltersAnchor' title='Clear all filters'><img class='move-icon-down' src='clear_filter.png'></a>
+			<div>
+			<input id='selectAllButton' type='button' value='Select All'/>
+			<input id='selectNoneButton' type='button' value='Select None'/>
+			<input id='saveOrRestoreButton' type='button' value='Save/Restore'/>
+			<input id='deleteButton' type='button' value='Delete'/>
+			Cookies: <span id='cookieCountSpan'></span>
+			<span style='float:right' id='rightSpan'>
+			<a id='previousThemeAnchor' class='move-icon-down' title='Previous Theme'><img src='previous.png'></a>
+			<select id='styleSelect'>
+				<option id='0' value='black-tie'>Black Tie</option>
+				<option id='1' value='blitzer'>Blitzer</option>
+				<option id='2' value='cupertino'>Cupertino</option>
+				<option id='3' value='dot-luv'>Dot Luv</option>
+				<option id='4' value='dark-hive'>Dark Hive</option>
+				<option id='5' value='eggplant'>Eggplant</option>
+				<option id='6' value='excite-bike'>Excite Bike</option>
+				<option id='7' value='flick'>Flick</option>
+				<option id='8' value='hot-sneaks'>Hot Sneaks</option>
+				<option id='9' value='humanity'>Humanity</option>
+				<option id='10' value='le-frog'>Le Frog</option>
+				<option id='11' value='mint-choc'>Mint Choc</option>
+				<option id='12' value='overcast'>Overcast</option>
+				<option id='13' value='pepper-grinder'>Pepper Grinder</option>
+				<option id='14' value='redmond'>Redmond</option>
+				<option id='15' value='smoothness'>Smoothness</option>
+				<option id='16' value='south-street'>South Street</option>
+				<option id='17' value='start'>Start</option>
+				<option id='18' value='sunny'>Sunny</option>
+				<option id='19' value='swanky-purse'>Swanky Purse</option>
+				<option id='20' value='trontastic'>Trontastic</option>
+				<option id='21' value='ui-darkness'>UI Darkness</option>
+				<option id='22' value='ui-lightness'>UI Lightness</option>
+				<option id='23' value='vader'>Vader</option>
+			</select>		
+			<a id='nextThemeAnchor' class='move-icon-down' title='Next Theme'><img src='next.png'></a>			
+			<a href='http://www.upway2late.com/projects/awesome-cookie-manager' title='Help!' target='_new'>Help!</a>
+			<a href='http://www.upway2late.com/projects/awesome-cookie-manager' title='Help!' target='_new'><img class='move-icon-down' src='help.png'></a>
+			</span>
+		</div>
+	</div>
+	<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+		<table id='tab1' width='95%'><tr><td id='col1a'><b>Domain</b></td><td id='col2a'><b>Name</b></td><td align='right' id='col3a'><b>Expiration</b></td><td></td></tr></table>
+		<div id='cookiesDiv'>
+			<div id="listDiv">
+			</div>	
+		</div>	
+	</div>
+	<div id='confirmDiv' style='display:none'><span id='confirmSpan'></span></div>
+	<div id='cookieDetailsDiv' style='display:none'>
+		<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+			<span id='currentCookieId' cookieId='-1' style='display:none'></span>
+			<div id='detailsDialogueContainer'>
+				<table>
+					<tr><td>Domain</td><td><span id='detailsDomainSpan'></span></td></tr>
+					<tr><td>Name</td><td><span id='detailsNameSpan'></span></td></tr>
+					<tr>
+						<td valign='top'>
+							Value <a id='editCookieValueAnchor' title='Edit Cookie Value' style='float:right;display:none;'><img class='move-icon-down' src='cookie_edit.png'></a>
+						</td>
+						<td class="editDivTr">
+							<div id='detailsValueDiv' class='editDiv'></div>
+						</td>
+					</tr>
+					<tr><td>Host Only</td><td><span id='detailsHostOnlySpan'></span></td></tr>
+					<tr><td>Path</td><td><span id='detailsPathSpan'></span></td></tr>
+					<tr><td>Secure</td><td><span id='detailsSecureSpan'></span></td></tr>
+					<tr><td>HTTP Only</td><td><span id='detailsHttpOnlySpan'></span></td></tr>
+					<tr><td>Session</td><td><span id='detailsSessionSpan'></span></td></tr>
+					<tr><td>Expiration Date</td><td><span id='detailsExpirationDateSpan'></span></td></tr>
+					<tr><td>Store Id</td><td><span id='detailsStoreIdSpan'></span></td></tr>
+				</table>
+			</div>	
+		</div>
+	</div>
+	<div id='editCookieDiv' style='display:none'>
+		<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+			<div id='editDialogueContainer'>
+				<table>
+					<tr><td>Domain</td><td><span id='editDomainSpan'></span></td></tr>
+					<tr><td>Name</td><td><span id='editNameSpan'></span></td></tr>
+					<tr><td valign='top'>Current Value</td>
+						<td class="editDivTr">
+							<div id='editValueCurrentDiv' class='editDiv'></div>
+						</td>
+					</tr>
+					<tr><td valign='top'>New Value</td>
+						<td class="editDivTr">
+							<textarea id='editValueNewTextArea' cols='80' rows='15'>
+							</textarea>
+						</td>
+					</tr>
+					<tr><td>Current Expiration Date</td><td><span id='editExpirationDateSpan'></span></td></tr>
+					<tr><td>New Expiration Date</td>
+						<td>
+							<input type='text' id='newExpirationDatePicker'/> 
+							<select id='newExpirationHours'></select> :
+							<select id='newExpirationMinutes'></select> :
+							<select id='newExpirationSeconds'></select>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div id='saveCookiesDialogDiv' style='display:none'>
+		<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+			Save all selected (checked) cookies.
+			<table>
+				<tr>
+					<td>Title</td>
+					<td><input type='text' id='savedCookiesTitle'/></td>
+					<td><a id='saveSelectedCookiesAnchor' class='move-icon-down'><img src='disk.png'></a></td>
+				</tr>
+			</table>
+			<span id='saveCookiesErrorSpan' class='error'></span>
+		</div>
+		<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
+			Click to restore saved cookies:
+			<div id='savedCookiesContainerDiv'>
+				<div id='savedCookiesDiv'></div>
+			</div>
+		</div>
+	</div>	
+</body>
+</html>
