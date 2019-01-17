@@ -69,6 +69,8 @@ $(document).ready(function () {
 		setOptionsForm();
 		$('#saveButton').click(function () {
 			saveOptions();
+			// update background page settings
+			chrome.extension.getBackgroundPage().getAllOptionValues();
 			return false;
 		});
 		$('#closeButton').click(function () {
@@ -163,22 +165,32 @@ function bindDomEvents() {
 	
 }
 
+// keep copy of filters for comparison
+var filDI='', filNI='', filVI='';
+
 function initFilterKeyPress() {
 
 	$('#filterDomainInput').keydown(function(e){
-		if (e.which != 13){
-			loadCookies();
-		}
+		// call from a timer to spare some typing
+		setTimeout(function() {
+			var v = $("#filterDomainInput")[0].value;
+			if (e.which != 13 && filDI != v) {loadCookies();}
+			filDI = v;
+		}, 200);
 	});
 	$('#filterNameInput').keydown(function(e){
-		if (e.which != 13){
-			loadCookies();
-		}
+		setTimeout(function() {
+			var v = $("#filterNameInput")[0].value;
+			if (e.which != 13 && filNI != v) {loadCookies();}
+			filNI = v;
+		}, 200);
 	});
 	$('#filterValueInput').keydown(function(e){
-		if (e.which != 13){
-			loadCookies();
-		}
+		setTimeout(function() {
+			var v = $("#filterValueInput")[0].value;
+			if (e.which != 13 && filVI != v) {loadCookies();}
+			filVI = v;
+		}, 200);
 	});
 }
 
@@ -187,31 +199,55 @@ function clearFilters() {
 	loadCookies();
 }
 
-function loadCookies() {	
-	chrome.cookies.getAll({}, function(cookies){
-		cookies = filterCookies(cookies);
-		$('#cookieCountSpan').html(addCommas(cookies.length));
-		cookies.sort(sortDomain);
-		allCookies = cookies;
-		var html = "<table id='tab2'><tr id='row1'><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
-		if (cookies.length == 0) {
-			html += "<tr><td colspan='5'>no cookies returned!</td></tr>";
-		} else {
-			for (var i = 0, cookie; cookie = cookies[i]; i++) {
-				html += "<tr id='" + cookieRowPrefix + i + "'><td><input type='checkbox' id='" + cookieCheckBoxPrefix + i + "' />" + limitStringLength(cookie.domain, 35) + "</td><td><a class='cookieDetailsAnchor' cookieId='" + i + "' href=''>" 
-				+ limitStringLength(cookie.name, 30) + "</a></td><td name='date' align='right'>" + formatExpirationDate(cookie.expirationDate) + "</td><td name='time' align='right'>"
-				+ formatExpirationTime(cookie.expirationDate) + '</td></tr>';
-			}
-		}
-		html += '</table>';
-		$('#listDiv').html(html);
-		var w1 = parseInt($('#col1b').width(), 10);
-		var w2 = parseInt($('#col2b').width(), 10);
-		var w3 = parseInt($('#col3b').width(), 10);
-		$('#col1a').attr('width', w1);
-		$('#col2a').attr('width', w2);
-		$('#col3a').attr('width', w3);
-		$('#row1').hide();
+function loadCookies() {
+
+	var tabId, storeId;
+	// first get the current tab.id
+	chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
+		tabId=tabs[0].id;
+		// get the cookieStore.id using tab.id
+		chrome.cookies.getAllCookieStores(function(a) {
+			for (let i = 0; i < a.length; i++) {
+				if (a[i].tabIds.includes(tabId)) { storeId=a[i].id; break; }
+				}
+			// now get cookies from this cookieStore
+			chrome.cookies.getAll({'storeId': storeId}, function(cookies) {
+				// ensure that filters are stored
+				filDI=$("#filterDomainInput")[0].value
+				filNI=$("#filterNameInput")[0].value;
+				filVI=$("#filterValueInput")[0].value;
+	
+				cookies = filterCookies(cookies);
+				$('#cookieCountSpan').html(addCommas(cookies.length));
+				cookies.sort(sortDomain);
+				allCookies = cookies;
+				var html = "<table id='tab2'><tr id='row1'><td id='col0b'></td><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
+				if (cookies.length == 0) {
+					html += "<tr><td colspan='5'>no cookies returned!</td></tr>";
+				} else {
+					for (var i = 0, cookie; cookie = cookies[i]; i++) {
+						html += "<tr id='" + cookieRowPrefix + i + "'><td><input type='checkbox' id='" + cookieCheckBoxPrefix + i + "'></td>"
+						+ '<td class="dname">' + (cookie.domain[0] == '.' ? '<span class="tailDot">o</span>' : '') + cookie.domain
+						+ "</td><td class='cname'><a class='cookieDetailsAnchor' cookieId='" + i + "' href=''>"
+						+ (cookie.name || '?')
+						+ "</a></td><td name='date' align='right'>" + formatExpirationDate(cookie.expirationDate) + "</td><td name='time' align='right'>"
+						+ formatExpirationTime(cookie.expirationDate) + '</td></tr>';
+					}
+				}
+				html += '</table>';
+				$('#listDiv').html(html);
+				var w1 = parseInt($('#col1b').width(), 10);
+				var w2 = parseInt($('#col2b').width(), 10);
+				var w3 = parseInt($('#col3b').width(), 10);
+				$("#col0a").attr("width", parseInt($("#col0b").width(), 10));
+				$('#col1a').attr('width', w1);
+				$('#col2a').attr('width', w2);
+				$('#col3a').attr('width', w3);
+				$('#row1').hide();
+				// shift+click range select
+				$('#cookiesDiv input[type="checkbox"]').shiftSelectable();
+			});
+		});
 	});
 }
 
@@ -494,6 +530,8 @@ function deleteSelectedCookies(del) {
 			$('#' + cookieRowPrefix + index).hide();
 		}
 		$('#cookieCountSpan').html(addCommas(allCookies.length));
+		// fix cookie number discrepancies
+		loadCookies();
 	}
 }
 
@@ -595,8 +633,8 @@ function savedCookiesName(i) {
 }
 
 function sortSavedCookies(a, b) {
-	var aStr = a.title.toLowerCase();
-	var bStr = b.title.toLowerCase();
+	var aStr = a.title.toLowerCase() + new Date(a.saved).getTime();
+	var bStr = b.title.toLowerCase() + new Date(b.saved).getTime();
 	if (aStr < bStr) {
 		return -1;
 	}
@@ -623,8 +661,9 @@ function saveSelectedCookies() {
 		$('#saveCookiesErrorSpan').html('Could not save. No cookies have been selected (checked) for saving.&nbsp;&nbsp;&nbsp;<a href="" id="selectAllCookiesAnchor">select all</a>');
 		return;
 	}
-	
-	var savedCookies = {title:title, saved:String(new Date()), cookies:cookies};
+
+	var date = new Date;
+	var savedCookies = {title:title, saved:String(date), savedTS: date.getTime(), cookies:cookies};
 	var savedCookiesName = nextSavedCookiesName();
 	localStorage[savedCookiesName] = JSON.stringify(savedCookies);
 	showSavedCookieList();
@@ -745,7 +784,9 @@ function restoreCookie(cookie) {
 	}
 	
 	// NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
-	chrome.cookies.set({url:url, name:cookie.name, value:cookie.value, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId});
+	// read lasterror to prevent error when call fails
+	chrome.cookies.set({url:url, name:cookie.name, value:cookie.value, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId},
+		function(){void chrome.runtime.lastError;} );
 }
 
 function getNewExpirationDate() {

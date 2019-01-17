@@ -4,6 +4,7 @@
 <link id='styleLink' rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript" src="multis.js"></script>
 <script language="javascript" type="text/javascript" src="master.js"></script>
 <style>
 body {overflow-x:hidden;font-size: 100%;}
@@ -21,6 +22,24 @@ body {overflow-x:hidden;font-size: 100%;}
 .editDivTr {word-wrap:break-word;}
 #selectAllButton { margin-top: 5px; margin-bottom: 5px; }
 #rightSpan { margin-top: 5px; }
+#cookiesDiv {overflow-x: hidden !important;}
+#cookiesDiv input { vertical-align: bottom; }
+#cookiesDiv td.dname {
+	direction: rtl;
+	text-overflow: ellipsis;
+	max-width: 40vw;
+	overflow: hidden;
+	text-align: left;
+}
+#cookiesDiv td {white-space: nowrap;}
+#cookiesDiv td.cname {
+	text-overflow: ellipsis;
+	max-width: 28vw;
+	overflow: hidden;
+}
+.tailDot {visibility: hidden; font-size:0;}
+#cookiesDiv td:first-child {padding-right: 0;}
+td.dname {padding-left: 0;}
 </style>
 </head>	
 <body>
@@ -73,7 +92,7 @@ body {overflow-x:hidden;font-size: 100%;}
 		</div>
 	</div>
 	<div class='ui-widget-content ui-corner-all normal-font section-margin apply-padding'>
-		<table id='tab1' width='95%'><tr><td id='col1a'><b>Domain</b></td><td id='col2a'><b>Name</b></td><td align='right' id='col3a'><b>Expiration</b></td><td></td></tr></table>
+		<table id='tab1' width='95%'><tr><td id='col0a'></td><td id='col1a'><b>Domain</b></td><td id='col2a'><b>Name</b></td><td align='right' id='col3a'><b>Expiration</b></td><td></td></tr></table>
 		<div id='cookiesDiv'>
 			<div id="listDiv">
 			</div>	
