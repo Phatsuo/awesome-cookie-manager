@@ -1,6 +1,6 @@
 {
   "name": "Awesome Cookie Manager",
-  "version": "1.0.0.0",
+  "version": "1.0.0.2",
   "description": "Displays a list of all Google Chrome cookies. Allows searching, viewing, editing, saving, restoring, and deleting cookies.",
   "icons": { "16": "icon_16.png", "48": "icon_48.png", "128": "icon_128.png" },
   "options_page": "options.html",

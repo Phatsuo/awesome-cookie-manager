@@ -1,54 +1,54 @@
 /////////////////
 // option vars //
 /////////////////
-var lsUiStyle = 'uiStyle';
+const lsUiStyle = 'uiStyle';
 
 // local storage settings key names
-var lsConfirmDeleteCookies = 'confirmDeleteCookies';
-var lsConfirmRestoreStoredCookies = 'confirmRestoreStoredCookies';
-var lsRestoreFixExpiration = 'restoreFixExpiration';
-var lsConfirmDeleteStoredCookies = 'confirmDeleteStoredCookies';
-var lsFilterDomain = 'filterDomain';
-var lsFilterName = 'filterName';
-var lsFilterValue = 'filterValue';
-var lsRememberFilterCloseTab = 'rememberFilter';
-var lsPopupHeight = 'popupHeight';
-var lsPopupWidth = 'popupWidth';
+const lsConfirmDeleteCookies = 'confirmDeleteCookies';
+const lsConfirmRestoreStoredCookies = 'confirmRestoreStoredCookies';
+const lsRestoreFixExpiration = 'restoreFixExpiration';
+const lsConfirmDeleteStoredCookies = 'confirmDeleteStoredCookies';
+const lsFilterDomain = 'filterDomain';
+const lsFilterName = 'filterName';
+const lsFilterValue = 'filterValue';
+const lsRememberFilterCloseTab = 'rememberFilter';
+const lsPopupHeight = 'popupHeight';
+const lsPopupWidth = 'popupWidth';
 
 
 // local storage settings variables
-var confirmDeleteCookies;
-var confirmRestoreStoredCookies;
-var restoreFixExpiration;
-var confirmDeleteStoredCookies;
-var filterDomain;
-var filterName;
-var filterValue;
-var rememberFilter;
-var popupHeight;
-var popupWidth;
+let confirmDeleteCookies;
+let confirmRestoreStoredCookies;
+let restoreFixExpiration;
+let confirmDeleteStoredCookies;
+let filterDomain;
+let filterName;
+let filterValue;
+let rememberFilter;
+let popupHeight;
+let popupWidth;
 
-var uiStyle = localStorage[lsUiStyle] != undefined ? localStorage[lsUiStyle] : 'start';
+let uiStyle = localStorage[lsUiStyle] !== undefined ? localStorage[lsUiStyle] : 'start';
 $('#styleLink').attr('href', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/' + uiStyle + '/jquery-ui.css');
 
 ////////////////
 // popup vars //
 ////////////////
 
-var hostPage;
-var allCookies;
-var cookieCheckBoxPrefix = 'cookieCheckBox-';
-var cookieRowPrefix = 'cookieRow-';
+let hostPage;
+let allCookies;
+const cookieCheckBoxPrefix = 'cookieCheckBox-';
+const cookieRowPrefix = 'cookieRow-';
 
-var lsSavedCookies = 'savedCookies';
-var lsMaxSavedCookies = 'maxSavedCookies';
+const lsSavedCookies = 'savedCookies';
+const lsMaxSavedCookies = 'maxSavedCookies';
 
-var maxSavedCookies;
+let maxSavedCookies;
 
 $(document).ready(function () {
 	getAllOptionValues();
 	hostPage = window.location.pathname.replace(/^.*\/([^\/]*)/, "$1").replace(/\.html/, '');
-	if (hostPage == 'popup') {
+	if (hostPage === 'popup') {
 		initTimeSelects();
 		$('input:button').button();
 		setPopupForm();
@@ -64,8 +64,7 @@ $(document).ready(function () {
 			showButtonPanel: true
 		});
 		bindDomEvents();
-	}
-	else if (hostPage == 'options') {
+	} else if (hostPage === 'options') {
 		setOptionsForm();
 		$('#saveButton').click(function () {
 			saveOptions();
@@ -91,9 +90,9 @@ function initTimeSelects() {
 }
 
 function addRangeToSelect(selector, max) {
-	for (var i=0; i < max; i++) {
-		var text = i;
-		if (i < 10) {
+	for (let i=0; i < max; i++) {
+        let text = i;
+        if (i < 10) {
 			text = "0" + i;
 		}
 		$(selector).append("'<option value='" + i + "'>" + text + "</option>");
@@ -147,48 +146,48 @@ function bindDomEvents() {
 	});
 	$('#filterDomainInput').attr('autofocus', 'autofocus');
 	$(document).on('click', '.cookieDetailsAnchor', function () {
-		var cookieId = $(this).attr('cookieId');
-		showCookieDetails(cookieId);
+        const cookieId = $(this).attr('cookieId');
+        showCookieDetails(cookieId);
 		return false;
 	});
 	$(document).on('click', '.restoreSavedCookiesAnchor', function () {
-		var cookieName = $(this).attr('cookieName');
-		restoreSavedCookiesConfirm(cookieName);
+        const cookieName = $(this).attr('cookieName');
+        restoreSavedCookiesConfirm(cookieName);
 		return false;
 	});
 	$(document).on('click', '.delete_session_anchor', function () {
-		var cookieName = $(this).attr('cookieName');
-		var cookieTitle = $(this).attr('cookieTitle');
-		deleteSavedCookiesConfirm(cookieName, cookieTitle);
+        const cookieName = $(this).attr('cookieName');
+        const cookieTitle = $(this).attr('cookieTitle');
+        deleteSavedCookiesConfirm(cookieName, cookieTitle);
 		return false;
 	});
 	
 }
 
 // keep copy of filters for comparison
-var filDI='', filNI='', filVI='';
+let filDI = '', filNI = '', filVI = '';
 
 function initFilterKeyPress() {
 
 	$('#filterDomainInput').keydown(function(e){
 		// call from a timer to spare some typing
 		setTimeout(function() {
-			var v = $("#filterDomainInput")[0].value;
-			if (e.which != 13 && filDI != v) {loadCookies();}
+            const v = $("#filterDomainInput")[0].value;
+            if (e.which !== 13 && filDI !== v) {loadCookies();}
 			filDI = v;
 		}, 200);
 	});
 	$('#filterNameInput').keydown(function(e){
 		setTimeout(function() {
-			var v = $("#filterNameInput")[0].value;
-			if (e.which != 13 && filNI != v) {loadCookies();}
+            const v = $("#filterNameInput")[0].value;
+            if (e.which !== 13 && filNI !== v) {loadCookies();}
 			filNI = v;
 		}, 200);
 	});
 	$('#filterValueInput').keydown(function(e){
 		setTimeout(function() {
-			var v = $("#filterValueInput")[0].value;
-			if (e.which != 13 && filVI != v) {loadCookies();}
+            const v = $("#filterValueInput")[0].value;
+            if (e.which !== 13 && filVI !== v) {loadCookies();}
 			filVI = v;
 		}, 200);
 	});
@@ -201,8 +200,8 @@ function clearFilters() {
 
 function loadCookies() {
 
-	var tabId, storeId;
-	// first get the current tab.id
+    let tabId, storeId;
+    // first get the current tab.id
 	chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
 		tabId=tabs[0].id;
 		// get the cookieStore.id using tab.id
@@ -221,13 +220,14 @@ function loadCookies() {
 				$('#cookieCountSpan').html(addCommas(cookies.length));
 				cookies.sort(sortDomain);
 				allCookies = cookies;
-				var html = "<table id='tab2'><tr id='row1'><td id='col0b'></td><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
-				if (cookies.length == 0) {
+                let html = "<table id='tab2'><tr id='row1'><td id='col0b'></td><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
+                if (cookies.length === 0) {
 					html += "<tr><td colspan='5'>no cookies returned!</td></tr>";
 				} else {
-					for (var i = 0, cookie; cookie = cookies[i]; i++) {
+                    let i = 0, cookie;
+                    for (; cookie = cookies[i]; i++) {
 						html += "<tr id='" + cookieRowPrefix + i + "'><td><input type='checkbox' id='" + cookieCheckBoxPrefix + i + "'></td>"
-						+ '<td class="dname">' + (cookie.domain[0] == '.' ? '<span class="tailDot">o</span>' : '') + cookie.domain
+						+ '<td class="dname">' + (cookie.domain[0] === '.' ? '<span class="tailDot">o</span>' : '') + cookie.domain
 						+ "</td><td class='cname'><a class='cookieDetailsAnchor' cookieId='" + i + "' href=''>"
 						+ (cookie.name || '?')
 						+ "</a></td><td name='date' align='right'>" + formatExpirationDate(cookie.expirationDate) + "</td><td name='time' align='right'>"
@@ -236,10 +236,10 @@ function loadCookies() {
 				}
 				html += '</table>';
 				$('#listDiv').html(html);
-				var w1 = parseInt($('#col1b').width(), 10);
-				var w2 = parseInt($('#col2b').width(), 10);
-				var w3 = parseInt($('#col3b').width(), 10);
-				$("#col0a").attr("width", parseInt($("#col0b").width(), 10));
+                const w1 = parseInt($('#col1b').width(), 10);
+                const w2 = parseInt($('#col2b').width(), 10);
+                const w3 = parseInt($('#col3b').width(), 10);
+                $("#col0a").attr("width", parseInt($("#col0b").width(), 10));
 				$('#col1a').attr('width', w1);
 				$('#col2a').attr('width', w2);
 				$('#col3a').attr('width', w3);
@@ -252,11 +252,11 @@ function loadCookies() {
 }
 
 function filterCookies(cookies) {
-	var newCookies = new Array();
-	var filterDomainPattern;
-	var filterNamePattern;
-	var filterValuePattern;
-	filterDomain_set($("#filterDomainInput").val());
+    const newCookies = new Array();
+    let filterDomainPattern;
+    let filterNamePattern;
+    let filterValuePattern;
+    filterDomain_set($("#filterDomainInput").val());
 	filterName_set($("#filterNameInput").val());
 	filterValue_set($("#filterValueInput").val());
 	if (filterDomain.length > 0) {
@@ -268,7 +268,8 @@ function filterCookies(cookies) {
 	if (filterValue.length > 0) {
 		filterValuePattern = new RegExp(filterValue,'i');
 	}
-	for (var i = 0, cookie; cookie = cookies[i]; i++) {
+    let i = 0, cookie;
+    for (; cookie = cookies[i]; i++) {
 		if (filterMatch(cookie, filterDomainPattern, filterNamePattern, filterValuePattern)) {
 			newCookies.push(cookie);
 		}
@@ -277,16 +278,16 @@ function filterCookies(cookies) {
 }
 
 function filterMatch(cookie, filterDomainPattern, filterNamePattern, filterValuePattern) {
-	if (filterDomainPattern == undefined && filterNamePattern == undefined && filterValuePattern == undefined) {
+	if (filterDomainPattern === undefined && filterNamePattern === undefined && filterValuePattern === undefined) {
 		return true;
 	}
-	if (filterDomainPattern != undefined && cookie.domain.search(filterDomainPattern) == -1) {
+	if (filterDomainPattern !== undefined && cookie.domain.search(filterDomainPattern) === -1) {
 		return false;
 	}
-	if (filterNamePattern != undefined && cookie.name.search(filterNamePattern) == -1) {
+	if (filterNamePattern !== undefined && cookie.name.search(filterNamePattern) === -1) {
 		return false;
 	}
-	if (filterValuePattern != undefined && cookie.value.search(filterValuePattern) == -1) {
+	if (filterValuePattern !== undefined && cookie.value.search(filterValuePattern) === -1) {
 		return false;
 	}
 	return true;
@@ -300,57 +301,65 @@ function limitStringLength(string, max) {
 }
 
 function formatExpirationDateTime(expirationDate) {
-	if (expirationDate == undefined) {
+	if (expirationDate === undefined) {
 		return 'session';
 	}
-	var d = new Date(expirationDate*1000);
-	var date = d.getDate();
-	var month = d.getMonth() + 1;
-	var year = d.getFullYear();
-	var hours = d.getHours();
-	var minutes = d.getMinutes();
-	var seconds = d.getSeconds();
-	if (minutes < 10) {
+    const d = new Date(expirationDate * 1000);
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+    const hours = d.getHours();
+    let minutes = d.getMinutes();
+    let seconds = d.getSeconds();
+    if (minutes < 10) {
 		minutes = '0' + minutes;
 	}
 	if (seconds < 10) {
 		seconds = '0' + seconds;
 	}
-	return month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+    return !isNaN(month) && !isNaN(date) && !isNaN(year) && !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
+        ? month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds
+        : '';
 }
 
 function formatExpirationDate(expirationDate) {
-	if (expirationDate == undefined) {
+	if (expirationDate === undefined) {
 		return 'session';
 	}
-	var d = new Date(expirationDate*1000);
-	var date = d.getDate();
-	var month = d.getMonth() + 1;
-	var year = d.getFullYear();
-	return month + '/' + date + '/' + year;
+    const d = new Date(expirationDate * 1000);
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    return !isNaN(month) && !isNaN(date) && !isNaN(year)
+        ? month + '/' + date + '/' + year
+        : '';
 }
 
 function formatExpirationTime(expirationDate) {
-	if (expirationDate == undefined) {
+	if (expirationDate === undefined) {
 		return '';
 	}
-	var d = new Date(expirationDate*1000);
-	var hours = d.getHours();
-	var minutes = d.getMinutes();
-	var seconds = d.getSeconds();
-	if (minutes < 10) {
+    const d = new Date(expirationDate * 1000);
+    const hours = d.getHours();
+    let minutes = d.getMinutes();
+    let seconds = d.getSeconds();
+    if (minutes < 10) {
 		minutes = '0' + minutes;
 	}
 	if (seconds < 10) {
 		seconds = '0' + seconds;
 	}
-	return hours + ':' + minutes + ':' + seconds;
+    return !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
+        ? hours + ':' + minutes + ':' + seconds
+        : '';
+
 }
 
 function sortDomain(a, b) {
-	var aStr = rootDomain(a.domain).toLowerCase();
-	var bStr = rootDomain(b.domain).toLowerCase();
-	if (aStr < bStr) {
+    let aStr = rootDomain(a.domain).toLowerCase();
+    let bStr = rootDomain(b.domain).toLowerCase();
+    if (aStr < bStr) {
 		return -1;
 	}
 	if (aStr > bStr) {
@@ -376,17 +385,17 @@ function sortDomain(a, b) {
 }
 
 function rootDomain(domain) {
-	var array = domain.split('.');
-	if (array.length <= 2) {
+    const array = domain.split('.');
+    if (array.length <= 2) {
 		return domain;
 	}
 	return array[array.length-2] + '.' + array[array.length-1];
 }
 
 function sortIntDescending(a, b) {
-	var aInt = parseInt(a, 10) * -1;
-	var bInt = parseInt(b, 10) * -1;
-	if (aInt < bInt) {
+    const aInt = parseInt(a, 10) * -1;
+    const bInt = parseInt(b, 10) * -1;
+    if (aInt < bInt) {
 		return -1;
 	}
 	if (aInt > bInt) {
@@ -402,8 +411,8 @@ function showCookieDetails(index) {
 	} else if (index < 0) {
 		index = allCookies.length-1;
 	}
-	var cookie = allCookies[index];
-	$('#currentCookieId').attr('cookieId', index);
+    const cookie = allCookies[index];
+    $('#currentCookieId').attr('cookieId', index);
 	$('#detailsDomainSpan').html(cookie.domain);
 	$('#detailsNameSpan').html(cookie.name);
 	$('#detailsValueDiv').html(cookie.value);
@@ -428,24 +437,24 @@ function showCookieDetails(index) {
 }
 
 function editCookieValues() {
-	var index = parseInt($('#currentCookieId').attr('cookieId'), 10);
-	
-	if (index >= allCookies.length) {
+    let index = parseInt($('#currentCookieId').attr('cookieId'), 10);
+
+    if (index >= allCookies.length) {
 		index = 0;
 	} else if (index < 0) {
 		index = allCookies.length-1;
 	}
-	
-	var cookie = allCookies[index];
-	$('#editDomainSpan').html(cookie.domain);
+
+    const cookie = allCookies[index];
+    $('#editDomainSpan').html(cookie.domain);
 	$('#editNameSpan').html(cookie.name);
 	$('#editValueCurrentDiv').html(cookie.value);
 	$('#editValueNewTextArea').val(cookie.value);
-	var cols = $('#editValueNewTextArea').attr('cols');
-	$('#editValueNewTextArea').attr('rows', (cookie.value.length/cols)+ 2);
-	$('#editExpirationDateSpan').html(formatExpirationDateTime(cookie.expirationDate));	
-	var dt = new Date(formatExpirationDateTime(cookie.expirationDate));
-	$('#newExpirationDatePicker').datepicker( "setDate" , dt);
+    const cols = $('#editValueNewTextArea').attr('cols');
+    $('#editValueNewTextArea').attr('rows', (cookie.value.length/cols)+ 2);
+	$('#editExpirationDateSpan').html(formatExpirationDateTime(cookie.expirationDate));
+    const dt = new Date(formatExpirationDateTime(cookie.expirationDate));
+    $('#newExpirationDatePicker').datepicker( "setDate" , dt);
 	$('#newExpirationHours').val(dt.getHours());
 	$('#newExpirationMinutes').val(dt.getMinutes());
 	$('#newExpirationSeconds').val(dt.getSeconds());
@@ -461,19 +470,19 @@ function editCookieValues() {
 }
 
 function saveCookieEdits() {
-	var index = parseInt($('#currentCookieId').attr('cookieId'), 10);
-	
-	var currentValue = $('#editValueCurrentDiv').html();
-	var newValue = String($('#editValueNewTextArea').val());
-	newValue = $.trim(newValue);	
-	var currentExpirationDate = new Date($('#editExpirationDateSpan').html());
-	var newExpirationDate = getNewExpirationDate();
-	
-	if (currentValue != newValue || currentExpirationDate != newExpirationDate) {
-		var cookie = allCookies[index];
-		var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path; 
-		var expirationDate = newExpirationDate.getTime() / 1000;
-		// NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
+    const index = parseInt($('#currentCookieId').attr('cookieId'), 10);
+
+    const currentValue = $('#editValueCurrentDiv').html();
+    let newValue = String($('#editValueNewTextArea').val());
+    newValue = $.trim(newValue);
+    const currentExpirationDate = new Date($('#editExpirationDateSpan').html());
+    const newExpirationDate = getNewExpirationDate();
+
+    if (currentValue !== newValue || currentExpirationDate !== newExpirationDate) {
+        const cookie = allCookies[index];
+        const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
+        const expirationDate = newExpirationDate.getTime() / 1000;
+        // NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
 		chrome.cookies.set({url:url, name:cookie.name, value:newValue, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId}, function() {
 			cookie.value = newValue;
 			cookie.expirationDate = expirationDate;
@@ -481,7 +490,7 @@ function saveCookieEdits() {
 			$('#detailsExpirationDateSpan').html(formatExpirationDateTime(cookie.expirationDate));
 			$("#cookieDetailsDiv").dialog( "option", "maxHeight", 600);
 			$('#editCookieDiv').dialog('close');
-			if (currentExpirationDate != newExpirationDate) {
+			if (currentExpirationDate !== newExpirationDate) {
 				// have to update the list...
 				$('#cookieRow-' + index + ' > td[name="date"]').html(formatExpirationDate(cookie.expirationDate));
 				$('#cookieRow-' + index + ' > td[name="time"]').html(formatExpirationTime(cookie.expirationDate));
@@ -502,8 +511,9 @@ function selectNone() {
 
 function deleteSelectedCookiesConfirm() {
 	if (confirmDeleteCookies) {
-		var selected = 0;
-		for (var i = 0, cookie; cookie = allCookies[i]; i++) {
+        let selected = 0;
+        let i = 0, cookie;
+        for (; cookie = allCookies[i]; i++) {
 			if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 				selected++;
 			}
@@ -516,8 +526,8 @@ function deleteSelectedCookiesConfirm() {
 
 function deleteSelectedCookies(del) {
 	if (del) {
-		var removedIndexes = new Array();
-		for (var i = 0, cookie; cookie = allCookies[i]; i++) {
+        const removedIndexes = new Array();
+        for (var i = 0, cookie; cookie = allCookies[i]; i++) {
 			if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 				removedIndexes.push(i);
 				removeCookie(i, cookie);
@@ -525,8 +535,8 @@ function deleteSelectedCookies(del) {
 		}
 		removedIndexes.sort(sortIntDescending);
 		for (var i = 0; i < removedIndexes.length; i++) {
-			var index = removedIndexes[i];
-			allCookies.splice(index, 1);
+            const index = removedIndexes[i];
+            allCookies.splice(index, 1);
 			$('#' + cookieRowPrefix + index).hide();
 		}
 		$('#cookieCountSpan').html(addCommas(allCookies.length));
@@ -536,15 +546,15 @@ function deleteSelectedCookies(del) {
 }
 
 function removeCookie(index, cookie) {
-	var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
-	chrome.cookies.remove({url:url, name:cookie.name, storeId:cookie.storeId}, function(){
+    const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
+    chrome.cookies.remove({url:url, name:cookie.name, storeId:cookie.storeId}, function(){
 		
 	});
 }
 
 function nextTheme(add) {
-	var id = parseInt($('#styleSelect option:selected').attr('id'), 10) + add;
-	if (id > 23) {id = 0;}
+    let id = parseInt($('#styleSelect option:selected').attr('id'), 10) + add;
+    if (id > 23) {id = 0;}
 	if (id < 0) {id = 23;}
 	uiStyle = $("#styleSelect option[id=" + id + "]").val();
 	$('#styleSelect').val(String(uiStyle));
@@ -559,14 +569,14 @@ function styleSelectChanged() {
 }
 
 function saveOrRestore() {
-	
-	var title = '';
-	
-	var filterDomain = $("#filterDomainInput").val();
-	var filterName = $("#filterNameInput").val();
-	var filterValue = $("#filterValueInput").val();
-	
-	if (filterDomain.length > 0) {
+
+    let title = '';
+
+    const filterDomain = $("#filterDomainInput").val();
+    const filterName = $("#filterNameInput").val();
+    const filterValue = $("#filterValueInput").val();
+
+    if (filterDomain.length > 0) {
 		title += 'Domain: [' + filterDomain + ']';
 	}
 
@@ -584,7 +594,7 @@ function saveOrRestore() {
 		title += 'Value: [' + filterValue + ']';
 	}
 	
-	if (title.length == 0) {
+	if (title.length === 0) {
 		title = 'All Selected Cookies';
 	}
 	$('#savedCookiesTitle').val(title);
@@ -604,7 +614,7 @@ function saveOrRestore() {
 
 function maxSavedCookies_get() {
 	maxSavedCookies = localStorage[lsMaxSavedCookies];
-	if (maxSavedCookies == undefined) {
+	if (maxSavedCookies === undefined) {
 		maxSavedCookies_set(-1);
 	} else {
 		maxSavedCookies = parseInt(maxSavedCookies, 10);
@@ -618,9 +628,9 @@ function maxSavedCookies_set(val) {
 
 function nextSavedCookiesName() {
 	maxSavedCookies_get();
-	var next = 0;
-	for (var i = 0; i <= maxSavedCookies; i++) {
-		if (localStorage[savedCookiesName(i)] == undefined) {
+    const next = 0;
+    for (let i = 0; i <= maxSavedCookies; i++) {
+		if (localStorage[savedCookiesName(i)] === undefined) {
 			return savedCookiesName(i);
 		}
 	}
@@ -633,9 +643,9 @@ function savedCookiesName(i) {
 }
 
 function sortSavedCookies(a, b) {
-	var aStr = a.title.toLowerCase() + new Date(a.saved).getTime();
-	var bStr = b.title.toLowerCase() + new Date(b.saved).getTime();
-	if (aStr < bStr) {
+    const aStr = a.title.toLowerCase() + new Date(a.saved).getTime();
+    const bStr = b.title.toLowerCase() + new Date(b.saved).getTime();
+    if (aStr < bStr) {
 		return -1;
 	}
 	if (aStr > bStr) {
@@ -646,54 +656,55 @@ function sortSavedCookies(a, b) {
 
 function saveSelectedCookies() {
 	$('#saveCookiesErrorSpan').html('');
-	var title = $('#savedCookiesTitle').val();
-	if (title.length == '') {
+    const title = $('#savedCookiesTitle').val();
+    if (title.length === 0) {
 		$('#saveCookiesErrorSpan').html('Title is required.');
 		return;
 	}
-	var cookies = new Array();
-	for (var i = 0, cookie; cookie = allCookies[i]; i++) {
+    const cookies = new Array();
+    let i = 0, cookie;
+    for (; cookie = allCookies[i]; i++) {
 		if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 			cookies.push(cookie);
 		}
 	}
-	if (cookies.length == 0) {
+	if (cookies.length === 0) {
 		$('#saveCookiesErrorSpan').html('Could not save. No cookies have been selected (checked) for saving.&nbsp;&nbsp;&nbsp;<a href="" id="selectAllCookiesAnchor">select all</a>');
 		return;
 	}
 
-	var date = new Date;
-	var savedCookies = {title:title, saved:String(date), savedTS: date.getTime(), cookies:cookies};
-	var savedCookiesName = nextSavedCookiesName();
-	localStorage[savedCookiesName] = JSON.stringify(savedCookies);
+    const date = new Date;
+    const savedCookies = {title: title, saved: String(date), savedTS: date.getTime(), cookies: cookies};
+    const savedCookiesName = nextSavedCookiesName();
+    localStorage[savedCookiesName] = JSON.stringify(savedCookies);
 	showSavedCookieList();
 }
 
 function showSavedCookieList() {
 	$('#savedCookiesDiv').html('');
-	var html = '<table><tr><td></td><td><b>Title</b></td><td><b>Saved</b></td><td><b>Cookies</b></td><td><b>Delete</b></td></tr>';
-	maxSavedCookies_get();
-	var savedCookiesArray = new Array();
-	for (var i = 0; i <= maxSavedCookies; i++) {
-		if (localStorage[savedCookiesName(i)] != undefined) {
+    let html = '<table><tr><td></td><td><b>Title</b></td><td><b>Saved</b></td><td><b>Cookies</b></td><td><b>Delete</b></td></tr>';
+    maxSavedCookies_get();
+    const savedCookiesArray = new Array();
+    for (var i = 0; i <= maxSavedCookies; i++) {
+		if (localStorage[savedCookiesName(i)] !== undefined) {
 			var savedCookies = JSON.parse(localStorage[savedCookiesName(i)]);
 			savedCookiesArray.push({name:savedCookiesName(i), title:savedCookies.title, saved:savedCookies.saved, cookieCount:savedCookies.cookies.length});
 		}
 	}
 	savedCookiesArray.sort(sortSavedCookies);
 	for (var i = 0, savedCookies; savedCookies = savedCookiesArray[i]; i++) {
-		var icon = savedCookies.cookieCount == 1 ? 'application.png' : savedCookies.cookieCount == 2 ? 'application_double.png' : 'application_cascade.png';
-		html += "<tr>";
+        const icon = savedCookies.cookieCount === 1 ? 'application.png' : savedCookies.cookieCount === 2 ? 'application_double.png' : 'application_cascade.png';
+        html += "<tr>";
 		html += "<td><a class='restoreSavedCookiesAnchor' cookieName='" + savedCookies.name + "' href='' title='Restore Saved Cookies'><img src='" + icon + "' class='move-icon-down'></a></td>";
 		html += "<td><a class='restoreSavedCookiesAnchor' cookieName='" + savedCookies.name + "' href='' title='Restore Saved Cookies'>" + savedCookies.title + "</a></td>";
 		html += "<td>" + String(savedCookies.saved).replace(/ GMT.+/, '') + "</td>";
 		html += "<td align='center'>" + addCommas(savedCookies.cookieCount) + "</td>";
-		var cookieTitle = savedCookies.title.replace(/'/g, "\'").replace(/"/g, '');
-		html += "<td align='center'><a class='delete_session_anchor' cookieName='" + savedCookies.name + "' cookieTitle='" + cookieTitle + "' title='Delete Saved Cookies'><img class='delete-session-img move-icon-down' src='tab_close_2.png' class='move-icon-down'></a></td>";
+        const cookieTitle = savedCookies.title.replace(/'/g, "\'").replace(/"/g, '');
+        html += "<td align='center'><a class='delete_session_anchor' cookieName='" + savedCookies.name + "' cookieTitle='" + cookieTitle + "' title='Delete Saved Cookies'><img class='delete-session-img move-icon-down' src='tab_close_2.png' class='move-icon-down'></a></td>";
 		html += "</tr>";
 	}
 	html += '</table>';
-	if (savedCookiesArray.length == 0) {
+	if (savedCookiesArray.length === 0) {
 		html = '<br/><br/>&nbsp;&nbsp;&nbsp;<i>No saved cookies were found.</i>';
 	}
 	$('#savedCookiesDiv').append(html);
@@ -718,19 +729,19 @@ function deleteSavedCookies(del, savedCookiesName) {
 function addCommas(nStr)
 {
 	nStr += '';
-	var x = nStr.split('.');
-	var x1 = x[0];
-	var x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) {
+    const x = nStr.split('.');
+    let x1 = x[0];
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
 	return x1 + x2;
 }
 
 function showConfirm(title, msg, func, p1, p2) {
-	var confirmFunction = func;
-	$('#confirmSpan').html('<br/>' + msg);
+    const confirmFunction = func;
+    $('#confirmSpan').html('<br/>' + msg);
 	$('#confirmDiv').dialog("destroy").dialog({ autoOpen:false, width: 460, modal: true,
 		buttons:
 		{
@@ -744,8 +755,8 @@ function showConfirm(title, msg, func, p1, p2) {
 
 function restoreSavedCookiesConfirm(savedCookiesName) {
 	if (confirmRestoreStoredCookies) {
-		var savedCookies = JSON.parse(localStorage[savedCookiesName]);
-		showConfirm('Restore Saved Cookies', 'Are you sure you want to restore these Saved Cookies?<br/><br/>' + savedCookies.title, restoreSavedCookies, savedCookiesName, null);
+        const savedCookies = JSON.parse(localStorage[savedCookiesName]);
+        showConfirm('Restore Saved Cookies', 'Are you sure you want to restore these Saved Cookies?<br/><br/>' + savedCookies.title, restoreSavedCookies, savedCookiesName, null);
 	} else {
 		restoreSavedCookies(true, savedCookiesName);
 	}
@@ -753,32 +764,33 @@ function restoreSavedCookiesConfirm(savedCookiesName) {
 
 function restoreSavedCookies(restore, savedCookiesName) {
 	if (restore) {
-		var bg = chrome.extension.getBackgroundPage();
-		bg.restoreSavedCookiesBackground(savedCookiesName, loadCookies);
+        const bg = chrome.extension.getBackgroundPage();
+        bg.restoreSavedCookiesBackground(savedCookiesName, loadCookies);
 	}
 }
 
 function restoreSavedCookiesBackground(savedCookiesName, callback) {
-	var savedCookies = JSON.parse(localStorage[savedCookiesName]);
-	if (savedCookies == undefined || savedCookies.cookies == undefined) {
+    const savedCookies = JSON.parse(localStorage[savedCookiesName]);
+    if (savedCookies === undefined || savedCookies.cookies === undefined) {
 		$('#saveCookiesErrorSpan').html('Error restoring saved cookies.');
 		return;
 	}
-	for (var i = 0, cookie; cookie = savedCookies.cookies[i]; i++) {
+    let i = 0, cookie;
+    for (; cookie = savedCookies.cookies[i]; i++) {
 		restoreCookie(cookie);
 	}
-	if (callback != undefined) {
+	if (callback !== undefined) {
 		callback();
 	}
 }
 
 function restoreCookie(cookie) {
-	var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
-	var expirationDate = cookie.expirationDate;
-	if (restoreFixExpiration && expirationDate != undefined) {
-		var exp = new Date(expirationDate*1000);
-		var now = new Date();
-		if (exp < now) {
+    const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
+    let expirationDate = cookie.expirationDate;
+    if (restoreFixExpiration && expirationDate !== undefined) {
+        const exp = new Date(expirationDate * 1000);
+        const now = new Date();
+        if (exp < now) {
 			expirationDate += 31556926;
 		}
 	}
@@ -790,11 +802,11 @@ function restoreCookie(cookie) {
 }
 
 function getNewExpirationDate() {
-	var dt = new Date($('#newExpirationDatePicker').datepicker('getDate'));
-	var hours = parseInt($('#newExpirationHours').val(), 10);
-	var minutes = parseInt($('#newExpirationMinutes').val(), 10);
-	var seconds = parseInt($('#newExpirationSeconds').val(), 10);
-	dt.setHours(hours);
+    const dt = new Date($('#newExpirationDatePicker').datepicker('getDate'));
+    const hours = parseInt($('#newExpirationHours').val(), 10);
+    const minutes = parseInt($('#newExpirationMinutes').val(), 10);
+    const seconds = parseInt($('#newExpirationSeconds').val(), 10);
+    dt.setHours(hours);
 	dt.setMinutes(minutes);
 	dt.setSeconds(seconds);
 	return dt;
@@ -820,30 +832,30 @@ function getAllOptionValues() {
 function setPopupForm() {
 	$('#styleSelect').val(uiStyle);
 
-	if (rememberFilter && filterDomain != undefined && filterDomain != null && filterDomain != '' && filterDomain.length > 0 && filterDomain != 'undefined') {
+	if (rememberFilter && filterDomain !== undefined && filterDomain != null && filterDomain !== '' && filterDomain.length > 0 && filterDomain !== 'undefined') {
 		$('#filterDomainInput').val(filterDomain);
 	}
 
-	if (rememberFilter && filterName != undefined && filterName != null && filterName != '' && filterName.length > 0 && filterName != 'undefined') {
+	if (rememberFilter && filterName !== undefined && filterName != null && filterName !== '' && filterName.length > 0 && filterName !== 'undefined') {
 		$('#filterNameInput').val(filterName);
 	}
 
-	if (rememberFilter && filterValue != undefined && filterValue != null && filterValue != '' && filterValue.length > 0 && filterValue != 'undefined') {
+	if (rememberFilter && filterValue !== undefined && filterValue != null && filterValue !== '' && filterValue.length > 0 && filterValue !== 'undefined') {
 		$('#filterValueInput').val(filterValue);
 	}
 
-	var cookiesDivHeightCss = 'height:' + popupHeight + 'px; overflow:auto;';
-	$('#cookiesDiv').attr('style', cookiesDivHeightCss);
+    const cookiesDivHeightCss = 'height:' + popupHeight + 'px; overflow:auto;';
+    $('#cookiesDiv').attr('style', cookiesDivHeightCss);
 
-	var dialogueContainerHeightCss = 'height:' + (popupHeight-100) + 'px; overflow:auto;';
-	$('#detailsDialogueContainer').attr('style', dialogueContainerHeightCss);
+    const dialogueContainerHeightCss = 'height:' + (popupHeight - 100) + 'px; overflow:auto;';
+    $('#detailsDialogueContainer').attr('style', dialogueContainerHeightCss);
 	$('#editDialogueContainer').attr('style', dialogueContainerHeightCss);
 
 	$("body").css('min-width', popupWidth);
 	
-	if (popupWidth == 700) {
+	if (popupWidth === 700) {
 		$('#filterDomainInput,#filterNameInput,#filterValueInput').css('width', '120px');
-	} else if (popupWidth == 750) {
+	} else if (popupWidth === 750) {
 		$('#filterDomainInput,#filterNameInput,#filterValueInput').css('width', '140px');
 	}
 }
@@ -864,7 +876,7 @@ function setOptionsForm() {
 
 function confirmDeleteCookies_get() {
 	confirmDeleteCookies = localStorage[lsConfirmDeleteCookies];
-	if (confirmDeleteCookies == undefined) {
+	if (confirmDeleteCookies === undefined) {
 		confirmDeleteCookies_set(true);
 	} else {
 		confirmDeleteCookies = /^true$/i.test(confirmDeleteCookies);
@@ -878,7 +890,7 @@ function confirmDeleteCookies_set(val) {
 
 function confirmRestoreStoredCookies_get() {
 	confirmRestoreStoredCookies = localStorage[lsConfirmRestoreStoredCookies];
-	if (confirmRestoreStoredCookies == undefined) {
+	if (confirmRestoreStoredCookies === undefined) {
 		confirmRestoreStoredCookies_set(true);
 	} else {
 		confirmRestoreStoredCookies = /^true$/i.test(confirmRestoreStoredCookies);
@@ -892,7 +904,7 @@ function confirmRestoreStoredCookies_set(val) {
 
 function restoreFixExpiration_get() {
 	restoreFixExpiration = localStorage[lsRestoreFixExpiration];
-	if (restoreFixExpiration == undefined) {
+	if (restoreFixExpiration === undefined) {
 		restoreFixExpiration_set(true);
 	} else {
 		restoreFixExpiration = /^true$/i.test(restoreFixExpiration);
@@ -906,7 +918,7 @@ function restoreFixExpiration_set(val) {
 
 function confirmDeleteStoredCookies_get() {
 	confirmDeleteStoredCookies = localStorage[lsConfirmDeleteStoredCookies];
-	if (confirmDeleteStoredCookies == undefined) {
+	if (confirmDeleteStoredCookies === undefined) {
 		confirmDeleteStoredCookies_set(true);
 	} else {
 		confirmDeleteStoredCookies = /^true$/i.test(confirmDeleteStoredCookies);
@@ -920,7 +932,7 @@ function confirmDeleteStoredCookies_set(val) {
 
 function filterDomain_get() {
 	filterDomain = localStorage[lsFilterDomain];
-	if (filterDomain == undefined) {
+	if (filterDomain === undefined) {
 		filterDomain_set('');
 	}
 }
@@ -932,7 +944,7 @@ function filterDomain_set(val) {
 
 function filterName_get() {
 	filterName = localStorage[lsFilterName];
-	if (filterName == undefined) {
+	if (filterName === undefined) {
 		filterName_set('');
 	}
 }
@@ -944,7 +956,7 @@ function filterName_set(val) {
 
 function filterValue_get() {
 	filterValue = localStorage[lsFilterValue];
-	if (filterValue == undefined) {
+	if (filterValue === undefined) {
 		filterValue_set('');
 	}
 }
@@ -956,7 +968,7 @@ function filterValue_set(val) {
 
 function rememberFilter_get() {
 	rememberFilter = localStorage[lsRememberFilterCloseTab];
-	if (rememberFilter == undefined) {
+	if (rememberFilter === undefined) {
 		rememberFilter_set(true);
 	} else {
 		rememberFilter = /^true$/i.test(rememberFilter);
@@ -970,7 +982,7 @@ function rememberFilter_set(val) {
 
 function popupHeight_get() {
 	popupHeight = localStorage[lsPopupHeight];
-	if (popupHeight == undefined) {
+	if (popupHeight === undefined) {
 		popupHeight_set(450);
 	} else {
 		popupHeight = parseInt(popupHeight, 10);
@@ -984,7 +996,7 @@ function popupHeight_set(val) {
 
 function popupWidth_get() {
 	popupWidth = localStorage[lsPopupWidth];
-	if (popupWidth == undefined) {
+	if (popupWidth === undefined) {
 		popupWidth_set(750);
 	} else {
 		popupWidth = parseInt(popupWidth, 10);
@@ -998,7 +1010,7 @@ function popupWidth_set(val) {
 
 function initStyle() {
 	uiStyle = localStorage[lsUiStyle];
-	if (uiStyle == undefined) {
+	if (uiStyle === undefined) {
 		// it has never been selected.
 		uiStyle = 'start';
 	}
