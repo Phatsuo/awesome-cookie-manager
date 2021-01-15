@@ -64,7 +64,7 @@ $(document).ready(function () {
 			showButtonPanel: true
 		});
 		bindDomEvents();
-	} else if (hostPage === 'options') {
+	}	else if (hostPage === 'options') {
 		setOptionsForm();
 		$('#saveButton').click(function () {
 			saveOptions();
@@ -76,7 +76,7 @@ $(document).ready(function () {
 			closeWindow();
 			return false;
 		});
-	}	
+	}
 });
 
 /////////////////////
@@ -91,8 +91,8 @@ function initTimeSelects() {
 
 function addRangeToSelect(selector, max) {
 	for (let i=0; i < max; i++) {
-        let text = i;
-        if (i < 10) {
+		let text = i;
+		if (i < 10) {
 			text = "0" + i;
 		}
 		$(selector).append("'<option value='" + i + "'>" + text + "</option>");
@@ -146,22 +146,22 @@ function bindDomEvents() {
 	});
 	$('#filterDomainInput').attr('autofocus', 'autofocus');
 	$(document).on('click', '.cookieDetailsAnchor', function () {
-        const cookieId = $(this).attr('cookieId');
-        showCookieDetails(cookieId);
+		const cookieId = $(this).attr('cookieId');
+		showCookieDetails(cookieId);
 		return false;
 	});
 	$(document).on('click', '.restoreSavedCookiesAnchor', function () {
-        const cookieName = $(this).attr('cookieName');
-        restoreSavedCookiesConfirm(cookieName);
+		const cookieName = $(this).attr('cookieName');
+		restoreSavedCookiesConfirm(cookieName);
 		return false;
 	});
 	$(document).on('click', '.delete_session_anchor', function () {
-        const cookieName = $(this).attr('cookieName');
-        const cookieTitle = $(this).attr('cookieTitle');
-        deleteSavedCookiesConfirm(cookieName, cookieTitle);
+		const cookieName = $(this).attr('cookieName');
+		const cookieTitle = $(this).attr('cookieTitle');
+		deleteSavedCookiesConfirm(cookieName, cookieTitle);
 		return false;
 	});
-	
+
 }
 
 // keep copy of filters for comparison
@@ -172,22 +172,22 @@ function initFilterKeyPress() {
 	$('#filterDomainInput').keydown(function(e){
 		// call from a timer to spare some typing
 		setTimeout(function() {
-            const v = $("#filterDomainInput")[0].value;
-            if (e.which !== 13 && filDI !== v) {loadCookies();}
+			const v = $("#filterDomainInput")[0].value;
+			if (e.which !== 13 && filDI !== v) {loadCookies();}
 			filDI = v;
 		}, 200);
 	});
 	$('#filterNameInput').keydown(function(e){
 		setTimeout(function() {
-            const v = $("#filterNameInput")[0].value;
-            if (e.which !== 13 && filNI !== v) {loadCookies();}
+			const v = $("#filterNameInput")[0].value;
+			if (e.which !== 13 && filNI !== v) {loadCookies();}
 			filNI = v;
 		}, 200);
 	});
 	$('#filterValueInput').keydown(function(e){
 		setTimeout(function() {
-            const v = $("#filterValueInput")[0].value;
-            if (e.which !== 13 && filVI !== v) {loadCookies();}
+			const v = $("#filterValueInput")[0].value;
+			if (e.which !== 13 && filVI !== v) {loadCookies();}
 			filVI = v;
 		}, 200);
 	});
@@ -200,8 +200,8 @@ function clearFilters() {
 
 function loadCookies() {
 
-    let tabId, storeId;
-    // first get the current tab.id
+	let tabId, storeId;
+	// first get the current tab.id
 	chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
 		tabId=tabs[0].id;
 		// get the cookieStore.id using tab.id
@@ -215,19 +215,19 @@ function loadCookies() {
 				filDI=$("#filterDomainInput")[0].value
 				filNI=$("#filterNameInput")[0].value;
 				filVI=$("#filterValueInput")[0].value;
-	
+
 				cookies = filterCookies(cookies);
 				$('#cookieCountSpan').html(addCommas(cookies.length));
 				cookies.sort(sortDomain);
 				allCookies = cookies;
-                let html = "<table id='tab2'><tr id='row1'><td id='col0b'></td><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
-                if (cookies.length === 0) {
+				let html = "<table id='tab2'><tr id='row1'><td id='col0b'></td><td id='col1b'><b>Domain</b></td><td id='col2b'><b>Name</b></td><td align='right' id='col3b'><b>Expiration</b></td><td></td></tr>";
+				if (cookies.length === 0) {
 					html += "<tr><td colspan='5'>no cookies returned!</td></tr>";
 				} else {
-                    let i = 0, cookie;
-                    for (; cookie = cookies[i]; i++) {
+					for (let i = 0, cookie; cookie = cookies[i]; i++) {
+						let dot=cookie.domain.search(/^\d*\./)==0;
 						html += "<tr id='" + cookieRowPrefix + i + "'><td><input type='checkbox' id='" + cookieCheckBoxPrefix + i + "'></td>"
-						+ '<td class="dname">' + (cookie.domain[0] === '.' ? '<span class="tailDot">o</span>' : '') + cookie.domain
+						+ '<td class="dname">' + (dot ? '<span class="tailDot">o</span><span>' : '') + cookie.domain + (dot?'</span>':'')
 						+ "</td><td class='cname'><a class='cookieDetailsAnchor' cookieId='" + i + "' href=''>"
 						+ (cookie.name || '?')
 						+ "</a></td><td name='date' align='right'>" + formatExpirationDate(cookie.expirationDate) + "</td><td name='time' align='right'>"
@@ -236,10 +236,10 @@ function loadCookies() {
 				}
 				html += '</table>';
 				$('#listDiv').html(html);
-                const w1 = parseInt($('#col1b').width(), 10);
-                const w2 = parseInt($('#col2b').width(), 10);
-                const w3 = parseInt($('#col3b').width(), 10);
-                $("#col0a").attr("width", parseInt($("#col0b").width(), 10));
+				const w1 = parseInt($('#col1b').width(), 10);
+				const w2 = parseInt($('#col2b').width(), 10);
+				const w3 = parseInt($('#col3b').width(), 10);
+				$("#col0a").attr("width", parseInt($("#col0b").width(), 10));
 				$('#col1a').attr('width', w1);
 				$('#col2a').attr('width', w2);
 				$('#col3a').attr('width', w3);
@@ -252,24 +252,31 @@ function loadCookies() {
 }
 
 function filterCookies(cookies) {
-    const newCookies = new Array();
-    let filterDomainPattern;
-    let filterNamePattern;
-    let filterValuePattern;
-    filterDomain_set($("#filterDomainInput").val());
-	filterName_set($("#filterNameInput").val());
-	filterValue_set($("#filterValueInput").val());
-	if (filterDomain.length > 0) {
-		filterDomainPattern = new RegExp(filterDomain,'i');
-	}	
-	if (filterName.length > 0) {
-		filterNamePattern = new RegExp(filterName,'i');
-	}	
-	if (filterValue.length > 0) {
-		filterValuePattern = new RegExp(filterValue,'i');
+	const newCookies = new Array();
+	let filterDomainPattern;
+	let filterNamePattern;
+	let filterValuePattern;
+	var fDtag=$("#filterDomainInput"), fNtag=$("#filterNameInput"), fVtag=$("#filterValueInput");
+	filterDomain_set(fDtag.val());
+	filterName_set(fNtag.val());
+	filterValue_set(fVtag.val());
+	try{
+		if (filterDomain.length > 0) filterDomainPattern = new RegExp(filterDomain,'i');
+		fDtag[0].classList.remove('error');
+	}catch(e){fDtag[0].classList.add('error');}
+	{
+		try{
+			if (filterName.length > 0) filterNamePattern = new RegExp(filterName,'i');
+			fNtag[0].classList.remove('error');
+		}catch(e){fNtag[0].classList.add('error'); fNtag[0].title="Invalid regular expression"; }
 	}
-    let i = 0, cookie;
-    for (; cookie = cookies[i]; i++) {
+	{
+		try{
+			if (filterValue.length > 0) filterValuePattern = new RegExp(filterValue,'i');
+			fVtag[0].classList.remove('error');
+		}catch(e){fVtag[0].classList.add('error');}
+	}
+	for (let i = 0, cookie; cookie = cookies[i]; i++) {
 		if (filterMatch(cookie, filterDomainPattern, filterNamePattern, filterValuePattern)) {
 			newCookies.push(cookie);
 		}
@@ -304,62 +311,61 @@ function formatExpirationDateTime(expirationDate) {
 	if (expirationDate === undefined) {
 		return 'session';
 	}
-    const d = new Date(expirationDate * 1000);
-    const date = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
-    const hours = d.getHours();
-    let minutes = d.getMinutes();
-    let seconds = d.getSeconds();
-    if (minutes < 10) {
+	const d = new Date(expirationDate * 1000);
+	const date = d.getDate();
+	const month = d.getMonth() + 1;
+	const year = d.getFullYear();
+	const hours = d.getHours();
+	let minutes = d.getMinutes();
+	let seconds = d.getSeconds();
+	if (minutes < 10) {
 		minutes = '0' + minutes;
 	}
 	if (seconds < 10) {
 		seconds = '0' + seconds;
 	}
-    return !isNaN(month) && !isNaN(date) && !isNaN(year) && !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
-        ? month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds
-        : '';
+	return !isNaN(month) && !isNaN(date) && !isNaN(year) && !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
+		? month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds
+		: '';
 }
 
 function formatExpirationDate(expirationDate) {
 	if (expirationDate === undefined) {
 		return 'session';
 	}
-    const d = new Date(expirationDate * 1000);
-    const date = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
+	const d = new Date(expirationDate * 1000);
+	const date = d.getDate();
+	const month = d.getMonth() + 1;
+	const year = d.getFullYear();
 
-    return !isNaN(month) && !isNaN(date) && !isNaN(year)
-        ? month + '/' + date + '/' + year
-        : '';
+	return !isNaN(month) && !isNaN(date) && !isNaN(year)
+		? month + '/' + date + '/' + year
+		: '';
 }
 
 function formatExpirationTime(expirationDate) {
 	if (expirationDate === undefined) {
 		return '';
 	}
-    const d = new Date(expirationDate * 1000);
-    const hours = d.getHours();
-    let minutes = d.getMinutes();
-    let seconds = d.getSeconds();
-    if (minutes < 10) {
+	const d = new Date(expirationDate * 1000);
+	const hours = d.getHours();
+	let minutes = d.getMinutes();
+	let seconds = d.getSeconds();
+	if (minutes < 10) {
 		minutes = '0' + minutes;
 	}
 	if (seconds < 10) {
 		seconds = '0' + seconds;
 	}
-    return !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
-        ? hours + ':' + minutes + ':' + seconds
-        : '';
-
+	return !isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)
+		? hours + ':' + minutes + ':' + seconds
+		: '';
 }
 
 function sortDomain(a, b) {
-    let aStr = rootDomain(a.domain).toLowerCase();
-    let bStr = rootDomain(b.domain).toLowerCase();
-    if (aStr < bStr) {
+	let aStr = rootDomain(a.domain).toLowerCase();
+	let bStr = rootDomain(b.domain).toLowerCase();
+	if (aStr < bStr) {
 		return -1;
 	}
 	if (aStr > bStr) {
@@ -385,17 +391,17 @@ function sortDomain(a, b) {
 }
 
 function rootDomain(domain) {
-    const array = domain.split('.');
-    if (array.length <= 2) {
+	const array = domain.split('.');
+	if (array.length <= 2) {
 		return domain;
 	}
 	return array[array.length-2] + '.' + array[array.length-1];
 }
 
 function sortIntDescending(a, b) {
-    const aInt = parseInt(a, 10) * -1;
-    const bInt = parseInt(b, 10) * -1;
-    if (aInt < bInt) {
+	const aInt = parseInt(a, 10) * -1;
+	const bInt = parseInt(b, 10) * -1;
+	if (aInt < bInt) {
 		return -1;
 	}
 	if (aInt > bInt) {
@@ -411,8 +417,8 @@ function showCookieDetails(index) {
 	} else if (index < 0) {
 		index = allCookies.length-1;
 	}
-    const cookie = allCookies[index];
-    $('#currentCookieId').attr('cookieId', index);
+	const cookie = allCookies[index];
+	$('#currentCookieId').attr('cookieId', index);
 	$('#detailsDomainSpan').html(cookie.domain);
 	$('#detailsNameSpan').html(cookie.name);
 	$('#detailsValueDiv').html(cookie.value);
@@ -433,57 +439,63 @@ function showCookieDetails(index) {
 		}
 	});
 	$('#cookieDetailsDiv').dialog("option", "title", "Cookie Details");
-	$('#cookieDetailsDiv').dialog('open');	
+	$('#cookieDetailsDiv').dialog('open');
 }
 
 function editCookieValues() {
-    let index = parseInt($('#currentCookieId').attr('cookieId'), 10);
+	let index = parseInt($('#currentCookieId').attr('cookieId'), 10);
 
-    if (index >= allCookies.length) {
+	if (index >= allCookies.length) {
 		index = 0;
 	} else if (index < 0) {
 		index = allCookies.length-1;
 	}
 
-    const cookie = allCookies[index];
-    $('#editDomainSpan').html(cookie.domain);
+	const cookie = allCookies[index];
+	$('#editDomainSpan').html(cookie.domain);
 	$('#editNameSpan').html(cookie.name);
 	$('#editValueCurrentDiv').html(cookie.value);
 	$('#editValueNewTextArea').val(cookie.value);
-    const cols = $('#editValueNewTextArea').attr('cols');
-    $('#editValueNewTextArea').attr('rows', (cookie.value.length/cols)+ 2);
+	const cols = $('#editValueNewTextArea').attr('cols');
+	$('#editValueNewTextArea').attr('rows', (cookie.value.length/cols)+ 2);
 	$('#editExpirationDateSpan').html(formatExpirationDateTime(cookie.expirationDate));
-    const dt = new Date(formatExpirationDateTime(cookie.expirationDate));
-    $('#newExpirationDatePicker').datepicker( "setDate" , dt);
+	const dt = new Date(formatExpirationDateTime(cookie.expirationDate));
+	$('#newExpirationDatePicker').datepicker( "setDate" , dt);
 	$('#newExpirationHours').val(dt.getHours());
 	$('#newExpirationMinutes').val(dt.getMinutes());
 	$('#newExpirationSeconds').val(dt.getSeconds());
 	$('#editCookieDiv').dialog("destroy").dialog({ autoOpen:false, width: 725, modal: true,
 		buttons:
-		{	
+		{
 			"Save": function() { saveCookieEdits(); },
 			"Cancel": function() { $(this).dialog("close"); }
 		}
 	});
 	$('#editCookieDiv').dialog("option", "title", "Edit Cookie Value");
-	$('#editCookieDiv').dialog('open');	
+	$('#editCookieDiv').dialog('open');
 }
 
 function saveCookieEdits() {
-    const index = parseInt($('#currentCookieId').attr('cookieId'), 10);
+	const index = parseInt($('#currentCookieId').attr('cookieId'), 10);
 
-    const currentValue = $('#editValueCurrentDiv').html();
-    let newValue = String($('#editValueNewTextArea').val());
-    newValue = $.trim(newValue);
-    const currentExpirationDate = new Date($('#editExpirationDateSpan').html());
-    const newExpirationDate = getNewExpirationDate();
+	const currentValue = $('#editValueCurrentDiv').html();
+	let newValue = String($('#editValueNewTextArea').val());
+	newValue = $.trim(newValue);
+	const currentExpirationDate = new Date($('#editExpirationDateSpan').html());
+	const newExpirationDate = getNewExpirationDate();
 
-    if (currentValue !== newValue || currentExpirationDate !== newExpirationDate) {
-        const cookie = allCookies[index];
-        const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
-        const expirationDate = newExpirationDate.getTime() / 1000;
-        // NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
-		chrome.cookies.set({url:url, name:cookie.name, value:newValue, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId}, function() {
+	if (currentValue !== newValue || currentExpirationDate !== newExpirationDate) {
+		const cookie = allCookies[index];
+		// clear leading dot in domain
+		const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain.replace(/^\./,'') + cookie.path; 
+		const expirationDate = newExpirationDate.getTime() / 1000;
+		// NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
+		let ck={url:url, name:cookie.name, value:newValue, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId};
+		// chrome 80+: set ck.domain when it starts with a dot
+		if (cookie.domain[0]=='.') { ck.domain=cookie.domain; }
+		chrome.cookies.set(ck, function() {
+			let err=chrome.runtime.lastError;
+			if (err) console.info('saveCookieEdits() Error:', err.message);
 			cookie.value = newValue;
 			cookie.expirationDate = expirationDate;
 			$('#detailsValueDiv').html(cookie.value);
@@ -511,9 +523,8 @@ function selectNone() {
 
 function deleteSelectedCookiesConfirm() {
 	if (confirmDeleteCookies) {
-        let selected = 0;
-        let i = 0, cookie;
-        for (; cookie = allCookies[i]; i++) {
+		let selected = 0;
+		for (let i = 0, cookie; cookie = allCookies[i]; i++) {
 			if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 				selected++;
 			}
@@ -526,8 +537,8 @@ function deleteSelectedCookiesConfirm() {
 
 function deleteSelectedCookies(del) {
 	if (del) {
-        const removedIndexes = new Array();
-        for (var i = 0, cookie; cookie = allCookies[i]; i++) {
+		const removedIndexes = new Array();
+		for (var i = 0, cookie; cookie = allCookies[i]; i++) {
 			if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 				removedIndexes.push(i);
 				removeCookie(i, cookie);
@@ -535,8 +546,8 @@ function deleteSelectedCookies(del) {
 		}
 		removedIndexes.sort(sortIntDescending);
 		for (var i = 0; i < removedIndexes.length; i++) {
-            const index = removedIndexes[i];
-            allCookies.splice(index, 1);
+			const index = removedIndexes[i];
+			allCookies.splice(index, 1);
 			$('#' + cookieRowPrefix + index).hide();
 		}
 		$('#cookieCountSpan').html(addCommas(allCookies.length));
@@ -546,15 +557,15 @@ function deleteSelectedCookies(del) {
 }
 
 function removeCookie(index, cookie) {
-    const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
-    chrome.cookies.remove({url:url, name:cookie.name, storeId:cookie.storeId}, function(){
-		
+	const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
+	chrome.cookies.remove({url:url, name:cookie.name, storeId:cookie.storeId}, function(){
+
 	});
 }
 
 function nextTheme(add) {
-    let id = parseInt($('#styleSelect option:selected').attr('id'), 10) + add;
-    if (id > 23) {id = 0;}
+	let id = parseInt($('#styleSelect option:selected').attr('id'), 10) + add;
+	if (id > 23) {id = 0;}
 	if (id < 0) {id = 23;}
 	uiStyle = $("#styleSelect option[id=" + id + "]").val();
 	$('#styleSelect').val(String(uiStyle));
@@ -570,13 +581,13 @@ function styleSelectChanged() {
 
 function saveOrRestore() {
 
-    let title = '';
+	let title = '';
 
-    const filterDomain = $("#filterDomainInput").val();
-    const filterName = $("#filterNameInput").val();
-    const filterValue = $("#filterValueInput").val();
+	const filterDomain = $("#filterDomainInput").val();
+	const filterName = $("#filterNameInput").val();
+	const filterValue = $("#filterValueInput").val();
 
-    if (filterDomain.length > 0) {
+	if (filterDomain.length > 0) {
 		title += 'Domain: [' + filterDomain + ']';
 	}
 
@@ -593,7 +604,7 @@ function saveOrRestore() {
 		}
 		title += 'Value: [' + filterValue + ']';
 	}
-	
+
 	if (title.length === 0) {
 		title = 'All Selected Cookies';
 	}
@@ -628,8 +639,8 @@ function maxSavedCookies_set(val) {
 
 function nextSavedCookiesName() {
 	maxSavedCookies_get();
-    const next = 0;
-    for (let i = 0; i <= maxSavedCookies; i++) {
+	const next = 0;
+	for (let i = 0; i <= maxSavedCookies; i++) {
 		if (localStorage[savedCookiesName(i)] === undefined) {
 			return savedCookiesName(i);
 		}
@@ -643,9 +654,9 @@ function savedCookiesName(i) {
 }
 
 function sortSavedCookies(a, b) {
-    const aStr = a.title.toLowerCase() + new Date(a.saved).getTime();
-    const bStr = b.title.toLowerCase() + new Date(b.saved).getTime();
-    if (aStr < bStr) {
+	const aStr = a.title.toLowerCase() + new Date(a.saved).getTime();
+	const bStr = b.title.toLowerCase() + new Date(b.saved).getTime();
+	if (aStr < bStr) {
 		return -1;
 	}
 	if (aStr > bStr) {
@@ -656,14 +667,13 @@ function sortSavedCookies(a, b) {
 
 function saveSelectedCookies() {
 	$('#saveCookiesErrorSpan').html('');
-    const title = $('#savedCookiesTitle').val();
-    if (title.length === 0) {
+	const title = $('#savedCookiesTitle').val();
+	if (title.length === 0) {
 		$('#saveCookiesErrorSpan').html('Title is required.');
 		return;
 	}
-    const cookies = new Array();
-    let i = 0, cookie;
-    for (; cookie = allCookies[i]; i++) {
+	const cookies = new Array();
+	for (let i = 0, cookie; cookie = allCookies[i]; i++) {
 		if ($('#' + cookieCheckBoxPrefix + i).attr('checked')) {
 			cookies.push(cookie);
 		}
@@ -673,34 +683,35 @@ function saveSelectedCookies() {
 		return;
 	}
 
-    const date = new Date;
-    const savedCookies = {title: title, saved: String(date), savedTS: date.getTime(), cookies: cookies};
-    const savedCookiesName = nextSavedCookiesName();
-    localStorage[savedCookiesName] = JSON.stringify(savedCookies);
+	const date = new Date;
+	const savedCookies = {title: title, saved: String(date), savedTS: date.getTime(), cookies: cookies};
+	const savedCookiesName = nextSavedCookiesName();
+	localStorage[savedCookiesName] = JSON.stringify(savedCookies);
 	showSavedCookieList();
 }
 
 function showSavedCookieList() {
 	$('#savedCookiesDiv').html('');
-    let html = '<table><tr><td></td><td><b>Title</b></td><td><b>Saved</b></td><td><b>Cookies</b></td><td><b>Delete</b></td></tr>';
-    maxSavedCookies_get();
-    const savedCookiesArray = new Array();
-    for (var i = 0; i <= maxSavedCookies; i++) {
+	let html = '<table><tr><td></td><td><b>Title</b></td><td><b>Saved</b></td><td><b>Cookies</b></td><td><b>Delete</b></td></tr>';
+	maxSavedCookies_get();
+	const savedCookiesArray = new Array();
+	for (var i = 0; i <= maxSavedCookies; i++) {
 		if (localStorage[savedCookiesName(i)] !== undefined) {
 			var savedCookies = JSON.parse(localStorage[savedCookiesName(i)]);
-			savedCookiesArray.push({name:savedCookiesName(i), title:savedCookies.title, saved:savedCookies.saved, cookieCount:savedCookies.cookies.length});
+			savedCookiesArray.push({name:savedCookiesName(i), title:savedCookies.title, saved:savedCookies.saved, cookieCount:savedCookies.cookies.length,
+				isInco: savedCookies.cookies[0].storeId=="0"?false:true });
 		}
 	}
 	savedCookiesArray.sort(sortSavedCookies);
 	for (var i = 0, savedCookies; savedCookies = savedCookiesArray[i]; i++) {
-        const icon = savedCookies.cookieCount === 1 ? 'application.png' : savedCookies.cookieCount === 2 ? 'application_double.png' : 'application_cascade.png';
-        html += "<tr>";
-		html += "<td><a class='restoreSavedCookiesAnchor' cookieName='" + savedCookies.name + "' href='' title='Restore Saved Cookies'><img src='" + icon + "' class='move-icon-down'></a></td>";
+		const icon = savedCookies.cookieCount === 1 ? 'application.png' : savedCookies.cookieCount === 2 ? 'application_double.png' : 'application_cascade.png';
+		html += "<tr>";
+		html += "<td"+(savedCookies.isInco?' class="inco"':'')+"><a class='restoreSavedCookiesAnchor' cookieName='" + savedCookies.name + "' href='' title='Restore Saved Cookies'><img src='" + icon + "' class='move-icon-down'></a></td>";
 		html += "<td><a class='restoreSavedCookiesAnchor' cookieName='" + savedCookies.name + "' href='' title='Restore Saved Cookies'>" + savedCookies.title + "</a></td>";
 		html += "<td>" + String(savedCookies.saved).replace(/ GMT.+/, '') + "</td>";
 		html += "<td align='center'>" + addCommas(savedCookies.cookieCount) + "</td>";
-        const cookieTitle = savedCookies.title.replace(/'/g, "\'").replace(/"/g, '');
-        html += "<td align='center'><a class='delete_session_anchor' cookieName='" + savedCookies.name + "' cookieTitle='" + cookieTitle + "' title='Delete Saved Cookies'><img class='delete-session-img move-icon-down' src='tab_close_2.png' class='move-icon-down'></a></td>";
+		const cookieTitle = savedCookies.title.replace(/'/g, "\'").replace(/"/g, '');
+		html += "<td align='center'><a class='delete_session_anchor' cookieName='" + savedCookies.name + "' cookieTitle='" + cookieTitle + "' title='Delete Saved Cookies'><img class='delete-session-img move-icon-down' src='tab_close_2.png' class='move-icon-down'></a></td>";
 		html += "</tr>";
 	}
 	html += '</table>';
@@ -729,19 +740,19 @@ function deleteSavedCookies(del, savedCookiesName) {
 function addCommas(nStr)
 {
 	nStr += '';
-    const x = nStr.split('.');
-    let x1 = x[0];
-    const x2 = x.length > 1 ? '.' + x[1] : '';
-    const rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
+	const x = nStr.split('.');
+	let x1 = x[0];
+	const x2 = x.length > 1 ? '.' + x[1] : '';
+	const rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
 	return x1 + x2;
 }
 
 function showConfirm(title, msg, func, p1, p2) {
-    const confirmFunction = func;
-    $('#confirmSpan').html('<br/>' + msg);
+	const confirmFunction = func;
+	$('#confirmSpan').html('<br/>' + msg);
 	$('#confirmDiv').dialog("destroy").dialog({ autoOpen:false, width: 460, modal: true,
 		buttons:
 		{
@@ -755,8 +766,8 @@ function showConfirm(title, msg, func, p1, p2) {
 
 function restoreSavedCookiesConfirm(savedCookiesName) {
 	if (confirmRestoreStoredCookies) {
-        const savedCookies = JSON.parse(localStorage[savedCookiesName]);
-        showConfirm('Restore Saved Cookies', 'Are you sure you want to restore these Saved Cookies?<br/><br/>' + savedCookies.title, restoreSavedCookies, savedCookiesName, null);
+		const savedCookies = JSON.parse(localStorage[savedCookiesName]);
+		showConfirm('Restore Saved Cookies', 'Are you sure you want to restore these Saved Cookies?<br/><br/>' + savedCookies.title, restoreSavedCookies, savedCookiesName, null);
 	} else {
 		restoreSavedCookies(true, savedCookiesName);
 	}
@@ -764,19 +775,18 @@ function restoreSavedCookiesConfirm(savedCookiesName) {
 
 function restoreSavedCookies(restore, savedCookiesName) {
 	if (restore) {
-        const bg = chrome.extension.getBackgroundPage();
-        bg.restoreSavedCookiesBackground(savedCookiesName, loadCookies);
+		const bg = chrome.extension.getBackgroundPage();
+		bg.restoreSavedCookiesBackground(savedCookiesName, loadCookies);
 	}
 }
 
 function restoreSavedCookiesBackground(savedCookiesName, callback) {
-    const savedCookies = JSON.parse(localStorage[savedCookiesName]);
-    if (savedCookies === undefined || savedCookies.cookies === undefined) {
+	const savedCookies = JSON.parse(localStorage[savedCookiesName]);
+	if (savedCookies === undefined || savedCookies.cookies === undefined) {
 		$('#saveCookiesErrorSpan').html('Error restoring saved cookies.');
 		return;
 	}
-    let i = 0, cookie;
-    for (; cookie = savedCookies.cookies[i]; i++) {
+	for (let i = 0, cookie; cookie = savedCookies.cookies[i]; i++) {
 		restoreCookie(cookie);
 	}
 	if (callback !== undefined) {
@@ -785,28 +795,34 @@ function restoreSavedCookiesBackground(savedCookiesName, callback) {
 }
 
 function restoreCookie(cookie) {
-    const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain + cookie.path;
-    let expirationDate = cookie.expirationDate;
-    if (restoreFixExpiration && expirationDate !== undefined) {
-        const exp = new Date(expirationDate * 1000);
-        const now = new Date();
-        if (exp < now) {
+	// clear leading dot in domain
+	const url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain.replace(/^\./,'') + cookie.path;
+	let expirationDate = cookie.expirationDate;
+	if (restoreFixExpiration && expirationDate !== undefined) {
+		const exp = new Date(expirationDate * 1000);
+		const now = new Date();
+		if (exp < now) {
 			expirationDate += 31556926;
 		}
 	}
-	
+
 	// NOTE: do not specify the domain. "domain:cookie.domain" - domains like "ads.undertone.com" will end up as ".ads.undertone.com"
+	var ck={url:url, name:cookie.name, value:cookie.value, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId};
+	// chrome 80+: set ck.domain when it starts with a dot
+	if (cookie.domain[0]=='.') { ck.domain=cookie.domain; }
 	// read lasterror to prevent error when call fails
-	chrome.cookies.set({url:url, name:cookie.name, value:cookie.value, path:cookie.path, secure:cookie.secure, httpOnly:cookie.httpOnly, expirationDate:expirationDate, storeId:cookie.storeId},
-		function(){void chrome.runtime.lastError;} );
+	chrome.cookies.set(ck, function(){
+		let err=chrome.runtime.lastError;
+		if (err) console.info('restoreCookie() Error:', err.message);
+		});
 }
 
 function getNewExpirationDate() {
-    const dt = new Date($('#newExpirationDatePicker').datepicker('getDate'));
-    const hours = parseInt($('#newExpirationHours').val(), 10);
-    const minutes = parseInt($('#newExpirationMinutes').val(), 10);
-    const seconds = parseInt($('#newExpirationSeconds').val(), 10);
-    dt.setHours(hours);
+	const dt = new Date($('#newExpirationDatePicker').datepicker('getDate'));
+	const hours = parseInt($('#newExpirationHours').val(), 10);
+	const minutes = parseInt($('#newExpirationMinutes').val(), 10);
+	const seconds = parseInt($('#newExpirationSeconds').val(), 10);
+	dt.setHours(hours);
 	dt.setMinutes(minutes);
 	dt.setSeconds(seconds);
 	return dt;
@@ -844,15 +860,15 @@ function setPopupForm() {
 		$('#filterValueInput').val(filterValue);
 	}
 
-    const cookiesDivHeightCss = 'height:' + popupHeight + 'px; overflow:auto;';
-    $('#cookiesDiv').attr('style', cookiesDivHeightCss);
+	const cookiesDivHeightCss = 'height:' + popupHeight + 'px; overflow:auto;';
+	$('#cookiesDiv').attr('style', cookiesDivHeightCss);
 
-    const dialogueContainerHeightCss = 'height:' + (popupHeight - 100) + 'px; overflow:auto;';
-    $('#detailsDialogueContainer').attr('style', dialogueContainerHeightCss);
+	const dialogueContainerHeightCss = 'height:' + (popupHeight - 100) + 'px; overflow:auto;';
+	$('#detailsDialogueContainer').attr('style', dialogueContainerHeightCss);
 	$('#editDialogueContainer').attr('style', dialogueContainerHeightCss);
 
 	$("body").css('min-width', popupWidth);
-	
+
 	if (popupWidth === 700) {
 		$('#filterDomainInput,#filterNameInput,#filterValueInput').css('width', '120px');
 	} else if (popupWidth === 750) {

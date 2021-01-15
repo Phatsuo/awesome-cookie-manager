@@ -38,8 +38,38 @@ body {overflow-x:hidden;font-size: 100%;}
 	overflow: hidden;
 }
 .tailDot {visibility: hidden; font-size:0;}
+.tailDot + span {direction: ltr;}
 #cookiesDiv td:first-child {padding-right: 0;}
 td.dname {padding-left: 0;}
+
+#statsDiv input[id^=filter].error {
+  background-color: #ff6666;
+  color: initial;
+}
+
+.inco {
+  position: relative;
+}
+.inco a::after {
+  content: "";
+  background-color: orange;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0.8em;
+  height: 0.8em;
+  text-align: center;
+  opacity: 0.7;
+}
+
+#savedCookiesDiv td:nth-child(3) {
+  white-space: nowrap;
+}
+#savedCookiesDiv td:nth-child(2) {
+  word-break: break-word;
+}
+
 </style>
 </head>	
 <body>
